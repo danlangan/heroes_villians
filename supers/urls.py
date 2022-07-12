@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.get_all_supers)
+    path('', views.supers_list),
+    path('<int:pk>/', views.super_function_by_id)
 ]
