@@ -8,12 +8,25 @@ from .models import Supers
 @api_view(['GET', 'POST'])
 def supers_list(request):
     if request.method == 'GET':
-        super_type = request.query_params.get('type')
-        supers = Supers.objects.all()
-        if super_type:
-            supers = supers.filter(super_type__type=super_type)
-        serializer = SupersSerializer(supers, many=True)
-        return Response(serializer.data)
+        # super_types = request.query_params.get('type')
+        # supers = Supers.objects.all()
+        villians = Supers.objects.filter(super_type_id=2)
+        heroes = Supers.objects.filter(super_type_id=1)
+        hero_serializer = SupersSerializer(heroes, many=True)
+        villian_serializer = SupersSerializer(villians, many=True)    
+        custom_response = {
+                    "heroes": hero_serializer.data,
+                    "villians": villian_serializer.data
+                }    
+                
+        return Response(custom_response)
+
+        
+            
+        # else:
+        #     supers = supers.filter(super_type__type=super_types)
+        # serializer = SupersSerializer(supers, many=True)
+        # return Response(serializer.data)
     elif request.method == 'POST':
         serializer = SupersSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
